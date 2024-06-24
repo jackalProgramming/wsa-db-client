@@ -1,5 +1,18 @@
 CREATE SCHEMA IF NOT EXISTS wsa;
-CREATE table IF NOT EXISTS cities 
-(city_id serial primary key, city_name varchar, state varchar, created_at timestamp, updated_at timestamp, deleted_at timestamp);
-CREATE table IF NOT EXISTS temperatures (temp_id serial primary key,  temp_city integer NOT null, foreign key(temp_city)  references cities(city_id),
-temp_c float, created_at timestamp, updated_at timestamp, deleted_at timestamp);
+CREATE TABLE IF NOT EXISTS wsa.cities (
+city_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+city_name VARCHAR(20) NOT NULL,
+state VARCHAR(20) NOT NULL,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
+updated_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
+);
+
+CREATE table IF NOT EXISTS wsa.temperatures (
+temp_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+temp_in_c NUMERIC(4,2) NOT NULL,
+city_id SMALLINT REFERENCES wsa.cities(city_id) ON DELETE CASCADE,
+created_at TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
+updated_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
+);
